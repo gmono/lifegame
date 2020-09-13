@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs"
 import { delay, int, float } from '../libs/lib';
 import { Draw } from "./Draw";
-import { b2s3 } from "./b2s3";
+import { b2s3 } from "./rules/b2s3";
 
 function getval(id:string){
     let e= document.querySelector(`input#${id}`) as HTMLInputElement;
@@ -20,7 +20,7 @@ async function main(){
     let size=[hsize[0]/4,hsize[1]/4]
     let d=new Draw(ele,size[0],size[1]);
 
-    let init=()=>tf.randomUniform(size,0,1,"float32").div(float(getval("rel"))).floor() as tf.Tensor2D
+    let init=()=>tf.randomUniform(size,0,1,"float32").div(float(getval("rel"))).floor().equal(0).asType("int32") as tf.Tensor2D
     let dt=init();
 
     d.draw2D(dt);

@@ -7,11 +7,11 @@ export function equalMap<T extends tf.Tensor>(ts: T, equto: number) {
 //此处应有大于比较  由此可得 所有比较判断
 
 //1-0 变换 即not运算
-function reverseBool(ts: tf.Tensor) {
+export function reverseBool(ts: tf.Tensor) {
     return ts.sub(1).abs();
 }
 //0-1 变为  -1 1 符号化运算
-function symlize(ts: tf.Tensor) {
+export function symlize(ts: tf.Tensor) {
     return ts.mul(2).sub(1);
 }
 //此处应有与或非 异或 

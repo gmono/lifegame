@@ -67,6 +67,6 @@ class BasicPoint implements PointObject
     }
     //基本反应
     reaction(nearmat: PointObject[][]): PointObject[][] {
-        //执行运动相关逻辑
+        throw new Error("Method not implemented.");
     }
 }

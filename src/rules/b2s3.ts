@@ -1,5 +1,5 @@
 import * as tf from "@tensorflow/tfjs"
-import { expandTo4D, equalMap, deleteDimTo2D } from "./matrix_tool";
+import { expandTo4D, equalMap, deleteDimTo2D } from "../matrix_tool";
 export function b2s3(ts: tf.Tensor2D) {
     //生命游戏卷积 从一个feature map 得到下一个featuremap
     //原始 S 卷积得到K 然后K+S 得到P 然后对P使用equalMap3 得到二值化的下一个
