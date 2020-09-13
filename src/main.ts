@@ -119,11 +119,12 @@ function get(id:string){
 }
 async function main(){
     let ele=document.createElement("canvas");
-    ele.height=2000;
-    ele.width=2000;
+    let hsize=[800,800]
+    ele.height=hsize[0];
+    ele.width=hsize[1];
     ele.id="ctx"
     document.body.appendChild(ele);
-    let size=[1000,1000]
+    let size=[hsize[0]/4,hsize[1]/4]
     let d=new Draw(ele,size[0],size[1]);
 
     let init=()=>tf.randomUniform(size,0,1,"float32").div(float(getval("rel"))).floor() as tf.Tensor2D
@@ -159,17 +160,19 @@ async function main(){
         if(p){
             p=false;
             loop();
+            get("start").style.background="red"
+            get("start").innerText="暂停";
         }
-        get("start").style.background="#111111"
-        get("pause").style.background=""
+        else{
+            p=true;
+            get("start").style.background=""
+            get("start").innerText="启动";
+            d.draw2D(dt);
+        }
+        
     };
     
-    get("pause").onclick=async()=>{
-        p=true;
-        get("start").style.background=""
-        get("pause").style.background="#111111"
-        d.draw2D(dt);
-    }
+
     get("reset").onclick=async()=>{
         dt=init();
         d.draw2D(dt);
@@ -190,10 +193,9 @@ async function main(){
         d.draw2D(dt);
     }
     get("sl").onclick=()=>{
-        sl=true;
-    }
-    get("nsl").onclick=()=>{
-        sl=false;
+        sl=!sl;
+        if(sl) get("sl").style.background="red";
+        else get("sl").style.background="";
     }
     
     
