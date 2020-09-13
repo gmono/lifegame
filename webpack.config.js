@@ -36,7 +36,7 @@ module.exports = {
   plugins:[
     new html({
       title: 'Output Management',
-      inject:'head',
+      inject:'body',
       filename:'index.html',
       template:'index.html'
     }),
@@ -64,5 +64,3 @@ module.exports = {
     }
   }
 };
-if(module.hot)
-  module.hot.accept();

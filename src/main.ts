@@ -178,10 +178,8 @@ async function main(){
         d.draw2D(dt);
         n=0;
     }
-    get("ctx").onclick=e=>{
-        let x,y;
-        x=e.offsetX;
-        y=e.offsetY;
+
+    function changepoint(x,y){
         if(x<0||y<0) return;
         let data=dt.arraySync();
         let tx,ty;
@@ -191,6 +189,26 @@ async function main(){
         dt.dispose();
         dt=tf.tensor(data);
         d.draw2D(dt);
+    }
+    function setpoint(x,y,v=1){
+        if(x<0||y<0) return;
+        let data=dt.arraySync();
+        let tx,ty;
+        tx=Math.floor(x/d.cw);
+        ty=Math.floor(y/d.ch)
+        data[ty][tx]=1;
+        dt.dispose();
+        dt=tf.tensor(data);
+        d.draw2D(dt);
+    }
+    get("ctx").onclick=e=>{
+        if(e.button==1)
+            changepoint(e.offsetX,e.offsetY);
+    }
+    get("ctx").onmousemove=e=>{
+        if(e.buttons===1){
+            setpoint(e.offsetX,e.offsetY,1);
+        }
     }
     get("sl").onclick=()=>{
         sl=!sl;
@@ -202,3 +220,7 @@ async function main(){
 }
 window.onload=main;
 console.log("helloworld");
+
+const mod= (module as any);
+if(mod.hot)
+  mod.hot.accept();
