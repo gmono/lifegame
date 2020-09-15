@@ -25,7 +25,7 @@ function use(K,S,P){
     }
     return new funcs();
 }
-
+type RuleType=ReturnType<typeof use>;
 function basic(ts:tf.Tensor2D){
     let ker = tf.tensor2d([
         [1, 1, 1],
@@ -43,11 +43,17 @@ function basic(ts:tf.Tensor2D){
 }
 
 //基本规则
-export function b2s3rule(rule){
+//表示 2的时候保持 3的时候稳定
+export function b3s23(rule:RuleType){
     rule.keep(2);
     rule.setOne(3);
 }
-export function b2s3(ts: tf.Tensor2D,ruleF:(rule:ReturnType<typeof use>)=>void=b2s3rule) {
+export function b36s23(rule:RuleType){
+    b3s23(rule);
+    rule.setOne(6);
+}
+//理论上这个可以支持各种规则
+export function matrix_rule(ts: tf.Tensor2D,ruleF:(rule:RuleType)=>void=b3s23) {
     //生命游戏卷积 从一个feature map 得到下一个featuremap
     //原始 S 卷积得到K 然后K+S 得到P 然后对P使用equalMap3 得到二值化的下一个
     //featuremap

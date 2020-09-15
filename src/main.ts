@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs"
 import { delay, int, float } from '../libs/lib';
 import { Draw } from "./Draw";
-import { b2s3 } from "./rules/b2s3";
+import { matrix_rule } from "./rules/matrix_rules";
 
 function getval(id:string){
     let e= document.querySelector(`input#${id}`) as HTMLInputElement;
@@ -34,7 +34,7 @@ async function main(){
         for(;;){
             await delay(delayt);
             let old=dt;
-            dt=b2s3(old);
+            dt=matrix_rule(old);
             old.dispose();
             
             // console.log(dt);
