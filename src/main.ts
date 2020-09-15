@@ -34,7 +34,7 @@ async function main(){
         for(;;){
             await delay(delayt);
             let old=dt;
-            dt=tf.tidy(()=>b2s3(old));
+            dt=b2s3(old);
             old.dispose();
             
             // console.log(dt);
@@ -114,6 +114,10 @@ async function main(){
 window.onload=main;
 console.log("helloworld");
 
-// const mod= (module as any);
-// if(mod.hot)
-//   mod.hot.accept();
+const mod= (module as any);
+if(mod.hot)
+  mod.hot.accept();
+console.log(mod.hot)
+mod.addDisposeHandler(()=>{
+    console.log("hello");
+})

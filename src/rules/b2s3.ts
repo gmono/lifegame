@@ -1,9 +1,32 @@
 import * as tf from "@tensorflow/tfjs"
 import { expandTo4D, equalMap, deleteDimTo2D } from "../matrix_tool";
-export function b2s3(ts: tf.Tensor2D) {
-    //生命游戏卷积 从一个feature map 得到下一个featuremap
-    //原始 S 卷积得到K 然后K+S 得到P 然后对P使用equalMap3 得到二值化的下一个
-    //featuremap
+function keep(K,S,P,v=2)
+{
+    let K2 = equalMap(K, v);
+    return P.add(K2.mul(S));
+}
+function setOne(K,S,P,v=3)
+{
+    let K3 = equalMap(K, v);
+    return P.add(K3);
+}
+function use(K,S,P){
+    class funcs
+    {
+        
+        protected K=K;
+        protected S=S;
+        protected P=P;
+        public keep=(v)=>this.P=keep(this.K,this.S,this.P,v);
+        public setOne=(v)=>this.P=setOne(this.K,this.S,this.P,v);
+        public get(){
+            return this.P;
+        }
+    }
+    return new funcs();
+}
+
+function basic(ts:tf.Tensor2D){
     let ker = tf.tensor2d([
         [1, 1, 1],
         [1, 0, 1],
@@ -13,11 +36,29 @@ export function b2s3(ts: tf.Tensor2D) {
     let S = expandTo4D(ts);
     let K = S.conv2d(ker, 1, "same", "NHWC");
     //计算
-    let K2 = equalMap(K, 2);
-    let K3 = equalMap(K, 3);
     //叠加
+    //这个是其他设0
     let P = tf.zerosLike(S);
-    P = P.add(K2.mul(S));
-    P = P.add(K3);
-    return deleteDimTo2D(P as tf.Tensor4D);
+    return {K,S,P};
 }
+
+//基本规则
+export function b2s3rule(rule){
+    rule.keep(2);
+    rule.setOne(3);
+}
+export function b2s3(ts: tf.Tensor2D,ruleF:(rule:ReturnType<typeof use>)=>void=b2s3rule) {
+    //生命游戏卷积 从一个feature map 得到下一个featuremap
+    //原始 S 卷积得到K 然后K+S 得到P 然后对P使用equalMap3 得到二值化的下一个
+    //featuremap
+    return tf.tidy(()=>{
+        let {K,S,P}=basic(ts);
+        let rule=use(K,S,P);
+        ruleF(rule);
+        P=rule.get();
+        return deleteDimTo2D(P as tf.Tensor4D);
+    });
+    
+}
+
+

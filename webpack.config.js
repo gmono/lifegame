@@ -36,7 +36,7 @@ module.exports = {
   plugins:[
     new html({
       title: 'Output Management',
-      inject:'body',
+      inject:true,
       filename:'index.html',
       template:'index.html'
     }),
