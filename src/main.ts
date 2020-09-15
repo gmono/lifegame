@@ -1,16 +1,49 @@
 import * as tf from "@tensorflow/tfjs"
 import { delay, int, float } from '../libs/lib';
 import { Draw } from "./Draw";
-import { matrix_rule } from "./rules/matrix_rules";
+import { matrix_rule, b36s23, b1s12, b3678s34678, b3s23, Rule } from './rules/matrix_rules';
 
 function getval(id:string){
     let e= document.querySelector(`input#${id}`) as HTMLInputElement;
     return e.value;
 }
-function get(id:string){
-    return document.querySelector(`#${id}`) as HTMLElement;
+function get<R extends keyof table>(id:string,tag:R=null):table[R]{
+    return document.querySelector(`#${id}`) as table[R];
+}
+let a=get("hello")
+
+type table={
+    option:HTMLOptionElement,
+    div:HTMLDivElement,
+    input:HTMLInputElement,
+    "*":HTMLElement,
+    select:HTMLSelectElement
+}
+function create<T extends keyof table,R extends keyof table[T]>(tag: T,id:string,values:object):table[T]{
+    let t= document.createElement(tag)
+    t.id=id;
+    //
+    for(let k in values){
+        if(k in t == false) continue;
+        t[k]=values[k];
+    }
+    return t as unknown as table[T];
+}
+let rules={
+    b3s23,
+    b1s12,
+    b3678s34678,
+    b36s23
+}
+function initSelection()
+{
+    for(let k in rules){
+        get("rule").appendChild(create("option",k,{innerText:k,value:k}))
+    }
 }
 async function main(){
+    initSelection();
+
     let ele=document.createElement("canvas");
     let hsize=[1024,1024]
     ele.height=hsize[0];
@@ -31,10 +64,13 @@ async function main(){
     //loop
     async function loop(){
         let delayt=int(getval("delay"));
+        //获取规则
+        let ruleid=get("rule","select").selectedOptions[0].value;
+        let rule=rules[ruleid] as Rule;
         for(;;){
             await delay(delayt);
             let old=dt;
-            dt=matrix_rule(old);
+            dt=matrix_rule(old,rule);
             old.dispose();
             
             // console.log(dt);
