@@ -63,6 +63,14 @@ export function b3678s34678(rule:RuleType){
     rule.setOne(7);
     rule.setOne(8);
 }
+export function b35678s5678(rule:RuleType){
+    // rule.keep(4);
+    rule.setOne(3);
+    rule.setOne(5);
+    rule.setOne(6);
+    rule.setOne(7);
+    rule.setOne(8);
+}
 
 //理论上这个可以支持各种规则
 export function matrix_rule(ts: tf.Tensor2D,ruleF:(rule:RuleType)=>void=b3s23) {
