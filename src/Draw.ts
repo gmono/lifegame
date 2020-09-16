@@ -79,7 +79,7 @@ export class Draw {
             let colored=t.mul(0xff0000ff|0) as typeof t;
             // let resized=vorexpand(horexpand(colored));
             
-            let r=this.pixelsize[0]==this.pixelsize[0]&&this.pixelsize[0]==1? colored:this.upsample.call(expandTo4D(colored),{}) as tf.Tensor4D;
+            let r=this.pixelsize[0]==this.pixelsize[0]&&this.pixelsize[0]==1? expandTo4D(colored):this.upsample.call(expandTo4D(colored),{}) as tf.Tensor4D;
             let resized=r.squeeze([0,3]) as tf.Tensor2D;
             //进行rgba话 横向扩展4倍
             // let rgb=horexpand(resized,4);
