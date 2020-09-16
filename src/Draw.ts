@@ -60,7 +60,8 @@ export class Draw {
 }
 
 //把01矩阵转换为像素矩阵
-let upsample=tf.layers.upSampling2d({size:[4,4]});
+const size=[4,4]
+let upsample=tf.layers.upSampling2d({size});
 async function torgb(t:tf.Tensor2D){
     //int32 然后×一个颜色
     let colored=t.mul(0xff0000ff|0) as typeof t;
