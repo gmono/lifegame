@@ -2,8 +2,8 @@ import * as tf from "@tensorflow/tfjs"
 //如果等于则为1 否则则为0
 //相等比较
 export function equalMap<T extends tf.Tensor>(ts: T, equto: number):T {
-    if(equto!=0) return ts.div(equto).sub(1).abs().lessEqual(0);
-    else return tf.equal(ts,equto).asType(ts.dtype) as T;
+    // if(equto!=0) return ts.div(equto).sub(1).abs().lessEqual(0);
+    return tf.equal(ts,equto).asType(ts.dtype) as T;
 }
 //此处应有大于比较  由此可得 所有比较判断
 

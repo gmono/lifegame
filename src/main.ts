@@ -44,20 +44,35 @@ function initSelection()
         get("rule").appendChild(create("option",k,{innerText:k,value:k}))
     }
 }
+
+function get_param(param:string){
+    var query = location.search.substring(1).split('&');
+    for(var i=0;i<query.length;i++){
+        var kv = query[i].split('=');
+        if(kv[0] == param){
+            return kv[1];
+        }
+    }
+    return null;
+}
+
 async function main(){
     initSelection();
 
-    let ele=document.createElement("canvas");
+    let ele=get("canvas") as HTMLCanvasElement;
     let hsize=[1024,1024]
     ele.height=hsize[0];
     ele.width=hsize[1];
     ele.id="ctx"
-    document.body.appendChild(ele);
-    let size=[hsize[0]/4,hsize[1]/4]
+    const rsize=get_param("rsize")==null? 0.25:float(get_param("rsize"))
+    let size=[hsize[0]/rsize,hsize[1]/rsize]
     let d=new Draw(ele,size[0],size[1]);
 
     let init=()=>tf.randomUniform(size,0,1,"float32").div(float(getval("rel"))).floor().equal(0).asType("int32") as tf.Tensor2D
     let dt=init();
+    //输出
+    get("info").innerText=`${dt.shape[0]}x${dt.shape[1]} (h*w) `
+    get("cinfo").innerText=`${hsize[0]}x${hsize[1]} (h*w)`
 
     d.draw2D(dt);
     console.log(dt);
@@ -66,6 +81,7 @@ async function main(){
     let n=0;
     //loop
     async function loop(){
+        //输出大小
         let delayt=int(getval("delay"));
         //获取规则
         let ruleid=get("rule","select").selectedOptions[0].value;

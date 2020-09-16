@@ -6,19 +6,34 @@
     <title>Document</title>
 </head>
 <body>
-    <canvas ></canvas>
+    <div>
+        <canvas id="canvas"></canvas>
+    </div>
+    
     <label>间隔时间:</label><input id="delay" type="text" value="0"><br>
     <label>重置阈值:</label><input id="rel" type="text" value="0.3"><br>
     <button id="start">开始</button>
     <!-- <button id="pause" >暂停</button> --> 
     <button id="reset">重置</button>
     <button id="sl">静默</button>
+    <form action="./index.html" method="GET" target="_self">
+        <label>缩放倍率(应该为2的指数倍):</label>
+        <input type="text" name="rsize" id="rsize" value="0.25">
+        <input type="submit" value="初始化">
+    </form>
+
     <!-- <button id="nsl">取消静默</button> -->
     <div>当前轮:<span id="n"></span></div>
     <div>
         <select id="rule">
             
         </select>
+    </div>
+    <div>
+        <label>当前画布大小:</label>
+        <span id="info"></span>
+        <label>绘图区大小:</label>
+        <span id="cinfo"></span>
     </div>
 </body>
 </html>
