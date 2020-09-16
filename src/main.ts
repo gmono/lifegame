@@ -65,6 +65,7 @@ async function main(){
     ele.width=hsize[1];
     ele.id="ctx"
     const rsize=get_param("rsize")==null? 0.25:float(get_param("rsize"))
+    get("rsize","input").value=rsize;
     let size=[hsize[0]/rsize,hsize[1]/rsize]
     let d=new Draw(ele,size[0],size[1]);
 
