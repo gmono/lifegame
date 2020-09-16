@@ -41,39 +41,40 @@ function basic(ts:tf.Tensor2D){
     let P = tf.zerosLike(S);
     return {K,S,P};
 }
-
-//基本规则
-//表示 2的时候保持 3的时候稳定
-export function b3s23(rule:RuleType){
-    rule.keep(2);
-    rule.setOne(3);
+export namespace Rules
+{
+    //基本规则
+    //表示 2的时候保持 3的时候稳定
+    export function b3s23(rule:RuleType){
+        rule.keep(2);
+        rule.setOne(3);
+    }
+    export function b36s23(rule:RuleType){
+        b3s23(rule);
+        rule.setOne(6);
+    }
+    export function b1s12(rule:RuleType){
+        rule.keep(2);
+        rule.setOne(1);
+    }
+    export function b3678s34678(rule:RuleType){
+        rule.keep(4);
+        rule.setOne(3);
+        rule.setOne(6);
+        rule.setOne(7);
+        rule.setOne(8);
+    }
+    export function b35678s5678(rule:RuleType){
+        // rule.keep(4);
+        rule.setOne(3);
+        rule.setOne(5);
+        rule.setOne(6);
+        rule.setOne(7);
+        rule.setOne(8);
+    }
 }
-export function b36s23(rule:RuleType){
-    b3s23(rule);
-    rule.setOne(6);
-}
-export function b1s12(rule:RuleType){
-    rule.keep(2);
-    rule.setOne(1);
-}
-export function b3678s34678(rule:RuleType){
-    rule.keep(4);
-    rule.setOne(3);
-    rule.setOne(6);
-    rule.setOne(7);
-    rule.setOne(8);
-}
-export function b35678s5678(rule:RuleType){
-    // rule.keep(4);
-    rule.setOne(3);
-    rule.setOne(5);
-    rule.setOne(6);
-    rule.setOne(7);
-    rule.setOne(8);
-}
-
 //理论上这个可以支持各种规则
-export function matrix_rule(ts: tf.Tensor2D,ruleF:(rule:RuleType)=>void=b3s23) {
+export function matrix_rule(ts: tf.Tensor2D,ruleF:(rule:RuleType)=>void=Rules.b3s23) {
     //生命游戏卷积 从一个feature map 得到下一个featuremap
     //原始 S 卷积得到K 然后K+S 得到P 然后对P使用equalMap3 得到二值化的下一个
     //featuremap
@@ -87,4 +88,4 @@ export function matrix_rule(ts: tf.Tensor2D,ruleF:(rule:RuleType)=>void=b3s23) {
     
 }
 
-export type Rule=typeof b3s23;
+export type Rule=typeof Rules.b3s23;

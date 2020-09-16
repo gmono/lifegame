@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs"
 import { delay, int, float } from '../libs/lib';
 import { Draw } from "./Draw";
-import { matrix_rule, b36s23, b1s12, b3678s34678, b3s23, Rule, b35678s5678 } from './rules/matrix_rules';
+import { matrix_rule, Rule} from './rules/matrix_rules';
 
 function getval(id:string){
     let e= document.querySelector(`input#${id}`) as HTMLInputElement;
@@ -29,13 +29,15 @@ function create<T extends keyof table,R extends keyof table[T]>(tag: T,id:string
     }
     return t as unknown as table[T];
 }
-let rules={
-    b3s23,
-    b1s12,
-    b3678s34678,
-    b36s23,
-    b35678s5678
-}
+
+// let rules={
+//     b3s23,
+//     b1s12,
+//     b3678s34678,
+//     b36s23,
+//     b35678s5678
+// }
+import {Rules as rules} from "./rules/matrix_rules"
 function initSelection()
 {
     for(let k in rules){
