@@ -140,6 +140,9 @@ export function int(other:string|number|AsInt){
         return other.toInt()
     }else return 0;
 }
+export function str(n){
+    return new Number(n).toString();
+}
 export function float(other:string|number|AsFloat){
     if(typeof other=="string") return parseFloat(other);
     else if(typeof other=="number") return other;

@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs"
-import { delay, int, float } from '../libs/lib';
+import { delay, int, float, str } from '../libs/lib';
 import { Draw } from "./Draw";
-import { matrix_rule, Rule} from './rules/matrix_rules';
+import { matrix_rule, Rule, train, useLayers } from './rules/matrix_rules';
 
 function getval(id:string){
     let e= document.querySelector(`input#${id}`) as HTMLInputElement;
@@ -81,16 +81,15 @@ async function main(){
     let sl=false;
     let n=0;
     //loop
+    let update=(old:tf.Tensor2D)=>matrix_rule(old,rules.b3s23)
     async function loop(){
         //输出大小
         let delayt=int(getval("delay"));
-        //获取规则
-        let ruleid=get("rule","select").selectedOptions[0].value;
-        let rule=rules[ruleid] as Rule;
+        
         for(;;){
             await delay(delayt);
             let old=dt;
-            dt=matrix_rule(old,rule);
+            dt=update(dt);
             old.dispose();
             
             // console.log(dt);
@@ -108,18 +107,41 @@ async function main(){
     get("start").onclick=async()=>{
         if(p){
             p=false;
+            //获取规则
+            let ruleid=get("rule","select").selectedOptions[0].value;
+            let rule=rules[ruleid] as Rule;
+            update=(old)=>matrix_rule(old,rule)
+            //启动循环
             loop();
             get("start").style.background="red"
             get("start").innerText="暂停";
+            get("train").style.display="none";
         }
         else{
             p=true;
             get("start").style.background=""
             get("start").innerText="启动";
             d.draw2D(dt);
+            get("train").style.display="";
         }
         
     };
+    get("train").onclick=async ()=>{
+        await train(rsize);
+        alert("训练成功,启动测试")
+        //显示用网络实现的更新
+        update=(old:tf.Tensor2D)=>useLayers(old);
+        //启动测试，测试完成前请勿操作 
+        //初始化
+        dt=init();
+        d.draw2D(dt);
+        n=0;
+        p=false;
+        get("delay","input").value=str(200);
+        await loop();
+        //
+        alert("测试完成");
+    }
     
 
     get("reset").onclick=async()=>{
