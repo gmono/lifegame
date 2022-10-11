@@ -2,7 +2,7 @@ import * as tf from "@tensorflow/tfjs"
 import { delay, int, float, str } from '../libs/lib';
 import { Draw } from "./Draw";
 import { matrix_rule, Rule, train, useLayers } from './rules/matrix_rules';
-
+tf.setBackend("webgl")
 function getval(id:string){
     let e= document.querySelector(`input#${id}`) as HTMLInputElement;
     return e.value;
@@ -69,7 +69,7 @@ async function main(){
     let size=[hsize[0]/rsize,hsize[1]/rsize]
     let d=new Draw(ele,size[0],size[1]);
 
-    let init=()=>tf.randomUniform(size,0,1,"float32").div(float(getval("rel"))).floor().equal(0).asType("int32") as tf.Tensor2D
+    let init=()=>tf.tidy(()=>tf.randomUniform(size,0,1,"float32").div(float(getval("rel"))).floor().equal(0).asType("int32") as tf.Tensor2D)
     let dt=init();
     //输出
     get("info").innerText=`${dt.shape[0]}x${dt.shape[1]} (h*w) `

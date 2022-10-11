@@ -94,7 +94,7 @@ export function matrix_rule(ts: tf.Tensor2D,ruleF:(rule:RuleType)=>void=Rules.b3
         return ret;
     });
     //训练的额外的东西
-    trainRule(ts,ret);
+    // trainRule(ts,ret);
     return ret;
 }
 
