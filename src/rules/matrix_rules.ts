@@ -3,7 +3,12 @@ import { expandTo4D, equalMap, deleteDimTo2D } from "../matrix_tool";
 import { range } from "../../libs/lib";
 import {Tensor, Tensor2D} from "@tensorflow/tfjs";
 //元操作 0 1矩阵 注意下面的都可以用logicAnd or等来实现
-//实现
+/**
+ * 实现多域的方法：将2d矩阵增加一个维度 使用卷积计算结果
+ * 显示时分别显示多个图层或选择其中一个显示 或综合 合成一个图层显示
+ * 需要改造显示系统 操作逻辑 basic
+ * rule 和数据初始化
+ */
 /**
  * 取反 1 0对调
  * @param tensor
