@@ -140,7 +140,7 @@ function use(K, S, P) {
     protected K = K;
     protected S = S;
     protected P = P;
-    protected conds: CondFunc[] = null;
+    protected conds: CondFunc[] = [];
     // protected cond: CondFunc = null;
 
     protected linkType: LinkType = "and";
