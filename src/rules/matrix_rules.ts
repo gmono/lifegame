@@ -128,6 +128,72 @@ function condNotEqual(v): CondFunc {
   };
 }
 ///操作集结束
+function endPoint(
+  target: Funcs,
+  propkey: PropertyKey,
+  descriptor: TypedPropertyDescriptor<(...args: any) => any>
+) {
+  debugger;
+  const f = descriptor.value;
+  descriptor.value = function (this: Funcs, ...args: any[]) {
+    f.call(this, ...args);
+    this.clearCond();
+  };
+}
+type LinkType = "and" | "or";
+
+class Funcs {
+  constructor(protected K, protected S, protected P) {}
+  protected conds: CondFunc[] = [];
+  // protected cond: CondFunc = null;
+
+  protected linkType: LinkType = "and";
+  /**
+   * 混合的条件 暂时使用第一个条件
+   * @returns
+   */
+  protected getComposedCond(): CondFunc {
+    return (K, S, P) => {
+      return this.conds[0](K, S, P);
+    };
+  }
+  //多次调用条件会自动使用and连接
+  public whenEqual(v: number) {
+    this.conds.push(condEqual(v));
+    return this;
+  }
+  public whenLess(v: number) {
+    this.conds.push(condLess(v));
+    return this;
+  }
+  public whenNotEqual(v: number) {
+    this.conds.push(condNotEqual(v));
+    return this;
+  }
+  public clearCond() {
+    this.conds = [];
+  }
+  @endPoint
+  public keep() {
+    this.P = keep(this.K, this.S, this.P, this.getComposedCond());
+  }
+  @endPoint
+  public setOne() {
+    this.P = setOne(this.K, this.S, this.P, this.getComposedCond());
+  }
+  @endPoint
+  public setZero() {
+    this.P = setZero(this.K, this.S, this.P, this.getComposedCond());
+  }
+
+  public get() {
+    return this.P;
+  }
+  public calculate<T>(func: (K, S, P) => T) {
+    return func(this.K, this.S, this.P);
+  }
+}
+
 /**
  * 用于提供dsl 方便规则编写
  * @param K
@@ -135,53 +201,7 @@ function condNotEqual(v): CondFunc {
  * @param P
  */
 function use(K, S, P) {
-  type LinkType = "and" | "or";
-  class funcs {
-    protected K = K;
-    protected S = S;
-    protected P = P;
-    protected conds: CondFunc[] = [];
-    // protected cond: CondFunc = null;
-
-    protected linkType: LinkType = "and";
-    /**
-     * 混合的条件 暂时使用第一个条件
-     * @returns
-     */
-    protected getComposedCond(): CondFunc {
-      return (K, S, P) => {
-        return this.conds[0](K, S, P);
-      };
-    }
-    //多次调用条件会自动使用and连接
-    public whenEqual(v: number) {
-      this.conds.push(condEqual(v));
-      return this;
-    }
-    public whenLess(v: number) {
-      this.conds.push(condLess(v));
-      return this;
-    }
-    public whenNotEqual(v: number) {
-      this.conds.push(condNotEqual(v));
-      return this;
-    }
-    public keep = () =>
-      (this.P = keep(this.K, this.S, this.P, this.getComposedCond()));
-    public setOne = () =>
-      (this.P = setOne(this.K, this.S, this.P, this.getComposedCond()));
-    public setZero = () =>
-      (this.P = setZero(this.K, this.S, this.P, this.getComposedCond()));
-
-    public get() {
-      return this.P;
-    }
-    public calculate<T>(func: (K, S, P) => T) {
-      return func(this.K, this.S, this.P);
-    }
-  }
-
-  return new funcs();
+  return new Funcs(K, S, P);
 }
 
 type RuleType = ReturnType<typeof use>;

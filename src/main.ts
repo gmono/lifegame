@@ -81,7 +81,7 @@ async function main() {
   initSelection();
 
   let ele = get("canvas") as HTMLCanvasElement;
-  let hsize = [1024, 1024];
+  let hsize = [2048, 2048];
   ele.height = hsize[0];
   ele.width = hsize[1];
   ele.id = "ctx";
