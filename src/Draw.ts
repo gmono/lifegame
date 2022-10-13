@@ -1,5 +1,7 @@
 import * as tf from "@tensorflow/tfjs"
 import { reverseBool, equalMap, expandTo4D } from './matrix_tool';
+import {debug} from "webpack";
+import {defaultDtype} from "./rules/matrix_rules";
 export class Draw {
     ctx: CanvasRenderingContext2D;
     tctx: OffscreenCanvasRenderingContext2D;
@@ -23,7 +25,7 @@ export class Draw {
         //
         
         this.pixelsize=[this.ch,this.cw];
-        this.upsample=tf.layers.upSampling2d({size:this.pixelsize});
+        this.upsample=tf.layers.upSampling2d({size:this.pixelsize,dtype:defaultDtype});
     }
     ch: number;
     cw: number;
@@ -42,14 +44,14 @@ export class Draw {
      * @param ts 01矩阵
      */
     public async draw2D(ts: tf.Tensor2D) {
-        this.tctx.clearRect(0,0,this.w,this.h);
+        // this.tctx.clearRect(0,0,this.w,this.h);
         // this.tctx.fillStyle = "#ffffff";
         // this.tctx.fillRect(0, 0, this.w, this.h);
         //法1
         let rgbmat=await this.torgb(ts);  //0 ffffffff 1 00000000
 
 
-        let img=this.tctx.putImageData(rgbmat,0,0);
+        // let img=this.tctx.putImageData(rgbmat,0,0);
         //法2
         // let arr = await ts.data();
         // arr.forEach((v, i) => {
@@ -60,8 +62,10 @@ export class Draw {
         // });
         // this.tctx.fill();
         //绘制到画布
-        this.ctx.clearRect(0,0,this.w,this.h);
-        this.ctx.drawImage(this.off, 0, 0);
+        // this.ctx.clearRect(0,0,this.w,this.h);
+        // this.ctx.drawImage(this.off, 0, 0);
+        this.ctx.putImageData(rgbmat,0,0);
+        // this.ctx.scale(4,4)
     }
     private upsample: tf.layers.Layer;
     async torgb(t:tf.Tensor2D){
@@ -78,7 +82,7 @@ export class Draw {
             //int32 然后×一个颜色
             let colored=t.mul(0xff0000ff|0) as typeof t;
             // let resized=vorexpand(horexpand(colored));
-            
+
             let r=this.pixelsize[0]==this.pixelsize[0]&&this.pixelsize[0]==1? expandTo4D(colored):this.upsample.call(expandTo4D(colored),{}) as tf.Tensor4D;
             let resized=r.squeeze([0,3]) as tf.Tensor2D;
             //进行rgba话 横向扩展4倍
@@ -86,7 +90,9 @@ export class Draw {
             //颜色处理 把1 1 1 1的连续4个 变为 aaaaaaaa
             // let cor=rgb.mul(0xaa);
             let num=resized.asType("int32");
+            // let num=resized;
             return num;
+
         });
         
         //num转换为uint8

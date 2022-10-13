@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@tensorflow/tfjs": "^2.3.0",
+    "@tensorflow/tfjs": "^3.21.0",
+    "@tensorflow/tfjs-backend-wasm": "^3.21.0",
+    "@tensorflow/tfjs-backend-webgpu": "^0.0.1-alpha.14",
     "html-webpack-plugin": "^4.4.1",
     "mobx": "^5.15.6",
     "ts-loader": "^8.0.3",
