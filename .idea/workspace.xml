@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="425c799f-9dd6-45d4-a9aa-ad4c2eb16743" name="变更" comment="webgpu后端测试失败&#10;升级到tfjs 3&#10;修改规则系统明确支持历史记录&#10;完善规则dsl，添加元操作体系，修改基本规则为元操作实现&#10;实现setZero规则">
+    <list default="true" id="425c799f-9dd6-45d4-a9aa-ad4c2eb16743" name="变更" comment="计划添加多图层">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rules/matrix_rules.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/rules/matrix_rules.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,18 +25,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "nodejs_package_manager_path": "yarn",
-    "settings.editor.selected.configurable": "project.propDebugger",
-    "ts.external.directory.path": "C:\\Users\\gaozi\\Desktop\\lifegame\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propDebugger&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\gaozi\\Desktop\\lifegame\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="JavaScript 调试.未命名">
     <configuration name="未命名" type="ChromiumRemoteDebugType" factoryName="Chromium Remote" nameIsGenerated="true" port="9229">
       <method v="2" />
@@ -78,7 +79,9 @@
       <updated>1665516045832</updated>
       <workItem from="1665516047418" duration="3466000" />
       <workItem from="1665519567103" duration="6611000" />
-      <workItem from="1665576182451" duration="23251000" />
+      <workItem from="1665576182451" duration="24483000" />
+      <workItem from="1665612776383" duration="1687000" />
+      <workItem from="1665643201309" duration="104000" />
     </task>
     <task id="LOCAL-00001" summary="webgpu后端测试失败&#10;升级到tfjs 3&#10;修改规则系统明确支持历史记录&#10;完善规则dsl，添加元操作体系，修改基本规则为元操作实现&#10;实现setZero规则">
       <created>1665610155578</created>
@@ -87,7 +90,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665610155579</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="计划添加多图层">
+      <created>1665610279512</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1665610279512</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -108,15 +118,15 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="webgpu后端测试失败&#10;升级到tfjs 3&#10;修改规则系统明确支持历史记录" />
     <MESSAGE value="webgpu后端测试失败&#10;升级到tfjs 3&#10;修改规则系统明确支持历史记录&#10;完善规则dsl，添加元操作体系，修改基本规则为元操作实现&#10;实现setZero规则" />
-    <option name="LAST_COMMIT_MESSAGE" value="webgpu后端测试失败&#10;升级到tfjs 3&#10;修改规则系统明确支持历史记录&#10;完善规则dsl，添加元操作体系，修改基本规则为元操作实现&#10;实现setZero规则" />
+    <MESSAGE value="计划添加多图层" />
+    <option name="LAST_COMMIT_MESSAGE" value="计划添加多图层" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/rules/matrix_rules.ts</url>
-          <line>84</line>
-          <properties lambdaOrdinal="-1" />
+          <line>96</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
