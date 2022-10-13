@@ -135,27 +135,43 @@ function condNotEqual(v): CondFunc {
  * @param P
  */
 function use(K, S, P) {
+  type LinkType = "and" | "or";
   class funcs {
     protected K = K;
     protected S = S;
     protected P = P;
-    protected cond: CondFunc = null;
+    protected conds: CondFunc[] = null;
+    // protected cond: CondFunc = null;
+
+    protected linkType: LinkType = "and";
+    /**
+     * 混合的条件 暂时使用第一个条件
+     * @returns
+     */
+    protected getComposedCond(): CondFunc {
+      return (K, S, P) => {
+        return this.conds[0](K, S, P);
+      };
+    }
+    //多次调用条件会自动使用and连接
     public whenEqual(v: number) {
-      this.cond = condEqual(v);
+      this.conds.push(condEqual(v));
       return this;
     }
     public whenLess(v: number) {
-      this.cond = condLess(v);
+      this.conds.push(condLess(v));
       return this;
     }
     public whenNotEqual(v: number) {
-      this.cond = condNotEqual(v);
+      this.conds.push(condNotEqual(v));
       return this;
     }
-    public keep = () => (this.P = keep(this.K, this.S, this.P, this.cond));
-    public setOne = () => (this.P = setOne(this.K, this.S, this.P, this.cond));
+    public keep = () =>
+      (this.P = keep(this.K, this.S, this.P, this.getComposedCond()));
+    public setOne = () =>
+      (this.P = setOne(this.K, this.S, this.P, this.getComposedCond()));
     public setZero = () =>
-      (this.P = setZero(this.K, this.S, this.P, this.cond));
+      (this.P = setZero(this.K, this.S, this.P, this.getComposedCond()));
 
     public get() {
       return this.P;
