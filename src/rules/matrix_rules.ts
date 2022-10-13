@@ -122,7 +122,11 @@ function condLess(v): CondFunc {
     return tf.less(K, v);
   };
 }
-
+function condNotEqual(v): CondFunc {
+  return (K, S, P) => {
+    return tf.notEqual(K, v);
+  };
+}
 ///操作集结束
 /**
  * 用于提供dsl 方便规则编写
@@ -142,6 +146,10 @@ function use(K, S, P) {
     }
     public whenLess(v: number) {
       this.cond = condLess(v);
+      return this;
+    }
+    public whenNotEqual(v: number) {
+      this.cond = condNotEqual(v);
       return this;
     }
     public keep = () => (this.P = keep(this.K, this.S, this.P, this.cond));
@@ -221,16 +229,6 @@ export namespace Rules {
     rule.whenEqual(4).setOne();
     rule.whenEqual(7).setOne();
     rule.whenEqual(8).setOne();
-  }
-  /**
-   * 条件测试
-   */
-  export function cond(rule: RuleType) {
-    const less = rule.calculate((K, S, P) => {
-      return tf.tidy(() => {
-        return tf.less(K, 3);
-      });
-    });
   }
 
   export function b36s23(rule: RuleType) {
