@@ -1,8 +1,14 @@
 import * as tf from "@tensorflow/tfjs"
 //如果等于则为1 否则则为0
 //相等比较
+/**
+ * 图检测 检测图中每个点是否等于某个数 如果等于返回1 否则返回0 与tf默认的
+ * 和tf.equal的能力一样 但发挥的为数值矩阵 而非bool矩阵
+ * @param ts
+ * @param equto
+ */
 export function equalMap<T extends tf.Tensor>(ts: T, equto: number):T {
-    if(equto!=0) return ts.div(equto).sub(1).abs().lessEqual(0);
+    // if(equto!=0) return ts.div(equto).sub(1).abs().lessEqual(0);
     return tf.equal(ts,equto).asType(ts.dtype) as T;
 }
 //此处应有大于比较  由此可得 所有比较判断
