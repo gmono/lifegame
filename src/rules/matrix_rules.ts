@@ -27,12 +27,16 @@ function use(K,S,P){
     return new funcs();
 }
 type RuleType=ReturnType<typeof use>;
+//扫描原始图像获取基础过滤图
+//两个问题 如何增大视野 并让越远的权重越低 如何让响应具有方向性或者说如何让几个格子联合起来形成更大的影响力
+//可以增加能量层和稳定性层 以及有方向的影响层 
+//数据类型改为int8
 function basic(ts:tf.Tensor2D){
     let ker = tf.tensor2d([
         [1, 1, 1],
         [1, 0, 1],
         [1, 1, 1]
-    ]).expandDims(-1).expandDims(-1) as tf.Tensor4D;
+    ],undefined,"int32").expandDims(-1).expandDims(-1) as tf.Tensor4D;
     //测试训练用
     // ker=tf.variable(ker,true,"kernel","float32");
     //把ts变为4d
