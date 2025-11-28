@@ -19,7 +19,7 @@ export class Draw {
         this.cw = this.w / cs;
         //cache
         this.off = new OffscreenCanvas(this.w, this.h);
-        this.tctx = this.off.getContext("2d");
+        this.tctx = (this.off.getContext("2d") as any);
         //
         
         this.pixelsize=[this.ch,this.cw];

@@ -192,7 +192,7 @@ async function main(){
 window.onload=main;
 console.log("helloworld");
 
-const mod= (module as any);
+const mod= ((window as any).module as any);
 if(mod.hot)
   mod.hot.accept();
 console.log(mod.hot)

@@ -164,7 +164,7 @@ export function list<T>(iter?:Iterable<T>):Array<T>{
 
 export function mapToObj(map:Map<any,any>){
     //
-    let r=new Proxy({},{
+    let r=new Proxy({},<any>{
         get(target,p:any,receiver){
             return map.get(p);
         },
