@@ -34,10 +34,11 @@ function random_set(K: tf.Tensor2D, S: tf.Tensor2D, P: tf.Tensor2D, v = 0.1) {
 //然后以此概率图做随机采样 一般来说是直接生成一个随机图 叫x 做x<t 得到一个0 1 图 然后使用where 设置oneslike
 //然后返回结果 这样可以让P以S为蓝本 通过周围系数K 来按概率设置存在状态
 
-function b_random_sample(K: tf.Tensor2D, S: tf.Tensor2D, P: tf.Tensor2D) {
-    let K3 = K.asType("float32").div(8.);
-    let S3 = S.asType("float32").mul(0.5);
-    let t = K3.add(S3).sigmoid();
+function b_random_sample(K: tf.Tensor2D, S: tf.Tensor2D, P: tf.Tensor2D, alive_ratio = 0.5, max_size = 8.0) {
+    let K3 = K.asType("float32").div(max_size);
+    let S3 = S.asType("float32").mul(alive_ratio);
+    //为了让分布从0到1 变为-0.5到0.5 方便sigmoid函数
+    let t = K3.sigmoid().sub(0.4);
     let x = tf.randomUniform(K.shape, 0, 1, "float32");
     let res = tf.where(x.less(t), tf.onesLike(P), tf.zerosLike(P));
     return res;
@@ -55,11 +56,11 @@ function use(K, S, P) {
         public setZero = (v) => this.P = setZero(this.K, this.S, this.P, v);
         public reset = (v) => this.P = tf.mul(tf.onesLike(this.P), v);
         public random_set = (v) => this.P = random_set(this.K, this.S, this.P, v);
-        public b_random_sample = (v) => this.P = b_random_sample(this.K, this.S, this.P);
+        public b_random_sample = (alive_ratio = 0.5, max_size = 8.0) => this.P = b_random_sample(this.K, this.S, this.P, alive_ratio, max_size);
         public get() {
             return this.P;
         }
-    }
+    }   
     return new funcs();
 }
 type RuleType = ReturnType<typeof use>;
@@ -91,9 +92,10 @@ export namespace Rules {
     //表示 2的时候保持 3的时候稳定
     export function b3s23(rule: RuleType) {
         // rule.reset(0);
-        rule.keep(2);
-        rule.setOne(3);
-        rule.random_set(0.0001);
+        // rule.keep(2);
+        // rule.setOne(3);
+        // rule.random_set(0.0001);
+        rule.b_random_sample(0.2, 20.0);
     }
     export function b36s23(rule: RuleType) {
         b3s23(rule);
