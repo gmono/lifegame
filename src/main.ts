@@ -80,7 +80,8 @@ async function main() {
             .floor()
             .equal(0)
             .asType("int32") as tf.Tensor2D)
-    //第一层 存在层
+    //第一层 存在层 随机dt b2s3改为每个都是8成概率 或根据周围格子数来确定死亡和生存概率
+    //可使用简单伯努利采样 通过卷积dt得到的值里 采样得到新的0和1  K(dt)/8
     let dt = init();
     let engobj_layer=tf.tidy(()=>{
         //能量物质层 主要表示地图上的能量物质 如食物等 
